@@ -1,0 +1,11 @@
+{
+	"hisky_conf": {
+		"sat_up_port": 5555,
+		"sat_down_port": 7777,
+		"sat_srv_host": "192.168.10.100",
+		"sat_down_delay": 100,
+		"sat_up_delay": 100
+	}
+
+}
+
