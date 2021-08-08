@@ -2213,6 +2213,8 @@ void thread_down(void) {
         MSG("INFO: got for downlink packets\n");
         gettimeofday(&current_unix_time, NULL);
         get_concentrator_time(&current_concentrator_time, current_unix_time);
+        txpkt.count_us = current_concentrator_time.tv_sec * 1000000UL + current_concentrator_time.tv_usec + 500000UL;
+        MSG("INFO: set down packet ts to %d\n", txpkt.count_us);
         jit_result = jit_enqueue(&jit_queue, &current_concentrator_time, &txpkt, JIT_ERROR_OK);
         if (jit_result != JIT_ERROR_OK) {
             printf("ERROR: Packet REJECTED (jit error=%d)\n", jit_result);

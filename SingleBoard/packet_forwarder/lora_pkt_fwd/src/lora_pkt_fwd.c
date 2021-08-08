@@ -1638,7 +1638,7 @@ void thread_up(void) {
                     }
                 }
                 /* convert packet timestamp to GPS absolute time */
-                j = lgw_cnt2gps(local_ref, p->count_us, &pkt_gps_time);
+                j = lgw_cnt2gps(local_ref, p->count_us, &pkt_gps_time);              
                 if (j == LGW_GPS_SUCCESS) {
                     pkt_gps_time_ms = pkt_gps_time.tv_sec * 1E3 + pkt_gps_time.tv_nsec / 1E6;
                     j = snprintf((char *)(buff_up + buff_index), TX_BUFF_SIZE-buff_index, ",\"tmms\":%llu",
@@ -2566,6 +2566,8 @@ void thread_down(void) {
             if (jit_result == JIT_ERROR_OK) {
                 gettimeofday(&current_unix_time, NULL);
                 get_concentrator_time(&current_concentrator_time, current_unix_time);
+                txpkt.count_us = current_concentrator_time.tv_sec * 1000000UL + current_concentrator_time.tv_usec + 1500000UL;
+                MSG("INFO: set down packet ts to %d\n", txpkt.count_us);
                 jit_result = jit_enqueue(&jit_queue, &current_concentrator_time, &txpkt, downlink_type);
                 if (jit_result != JIT_ERROR_OK) {
                     printf("ERROR: Packet REJECTED (jit error=%d)\n", jit_result);
